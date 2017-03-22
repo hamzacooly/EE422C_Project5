@@ -225,6 +225,9 @@ public abstract class Critter {
 			c.doTimeStep();
 		}
 		
+		//remove ded bugs
+		removeDead();
+		
 		// Resolve the fites
 		encounters();
 		
@@ -246,12 +249,7 @@ public abstract class Critter {
 		babies.clear();
 		
 		// Remove da ded bugs
-		Iterator<Critter> jj = population.iterator();
-		while(jj.hasNext()){
-			Critter k = jj.next();
-			if(k.energy <= 0)
-				jj.remove();
-		}
+		removeDead();
 	}
 	
 	/** 
@@ -287,6 +285,7 @@ public abstract class Critter {
 				}
 			}
 		}
+		removeDead();
 	}
 	
 	public static void displayWorld(Object pane) {} 
@@ -423,6 +422,15 @@ public abstract class Critter {
 		 */
 		protected static List<Critter> getBabies() {
 			return babies;
+		}
+	}
+	
+	private static void removeDead(){
+		Iterator<Critter> jj = population.iterator();
+		while(jj.hasNext()){
+			Critter k = jj.next();
+			if(k.energy <= 0)
+				jj.remove();
 		}
 	}
 	
