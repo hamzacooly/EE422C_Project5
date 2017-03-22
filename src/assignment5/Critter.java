@@ -1,6 +1,10 @@
 package assignment5;
 
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
 
 public abstract class Critter {
 	/* NEW FOR PROJECT 5 */
@@ -41,7 +45,27 @@ public abstract class Critter {
 		myPackage = Critter.class.getPackage().toString().split(" ")[1];
 	}
 	
-	protected final String look(int direction, boolean steps) {return "";}
+	protected final String look(int direction, boolean steps) {
+		int initX = x_coord;
+		int initY = y_coord;
+		
+		if(!steps){ // moving 1 step
+			this.coordChange(direction, 1);
+		}
+		else{ // moving 2 steps
+			this.coordChange(direction, 2);
+		}
+		for(Critter c: population){
+			if(c.x_coord == this.x_coord && c.y_coord == this.y_coord){
+				x_coord = initX;
+				y_coord = initY;
+				return c.toString();
+			}
+		}
+		x_coord = initX;
+		y_coord = initY;
+		return null;
+	}
 	
 	/* rest is unchanged from Project 4 */
 	
@@ -64,18 +88,165 @@ public abstract class Critter {
 	
 	private int x_coord;
 	private int y_coord;
+	private boolean hasMoved;
+	private boolean inFight;
 	
-	protected final void walk(int direction) {}
+
+	/**
+	 * Moves 1 step in the given direction
+	 * Checks if critter has already moved
+	 * If critter is in fight, checks if it is moving to an already occupied space
+	 * Deducts energy if critter moved/attempted to move
+	 * @param direction 0-7, refers to cardinal directions
+	 */
+	protected final void walk(int direction) {
+	    int initialX = this.x_coord;
+	    int initialY = this.y_coord;
+	    
+	    energy -= Params.walk_energy_cost;
+
+	    if(hasMoved)
+	    	return;
+	    else{
+	    	coordChange(direction, 1);
+	    	hasMoved = true;
+	        if (inFight) {
+		        for (Critter c : population) {
+		            if (this.x_coord == c.x_coord && this.y_coord == c.y_coord && !this.equals(c)){
+		                this.x_coord = initialX;
+		                this.y_coord = initialY;
+		                hasMoved = false;
+	                }
+	            }
+	        }
+	    }
+	}
 	
-	protected final void run(int direction) {}
+	/**
+	 * Moves 2 steps in the given direction
+	 * Checks if critter has already moved
+	 * If critter is in fight, checks if it is moving to an already occupied space
+	 * Deducts energy if critter moved/attempted to move
+	 * @param direction 0-7, refers to cardinal directions
+	 */
+	protected final void run(int direction) {
+        int initialX = this.x_coord;
+        int initialY = this.y_coord;
+        energy -= Params.run_energy_cost;
+
+        if(hasMoved)
+	    	return;
+	    else{
+	    	coordChange(direction, 2);
+	    	hasMoved = true;
+	        if (inFight) {
+		        for (Critter c : population) {
+		            if (this.x_coord == c.x_coord && this.y_coord == c.y_coord && !this.equals(c)){
+		                this.x_coord = initialX;
+		                this.y_coord = initialY;
+		                hasMoved = false;
+	                }
+	            }
+	        }
+	    }
+	}
 	
-	protected final void reproduce(Critter offspring, int direction) {}
+
+	/**
+	 * Checks if parent has enough energy to make baby
+	 * If it does, initializes baby fields and adds it to Babies List
+	 * @param offspring Critter passed from parent's doTimeStep()
+	 * @param direction where baby will spawn in relation to parent
+	 */
+	protected final void reproduce(Critter offspring, int direction) {
+        if (this.energy < Params.min_reproduce_energy) return;
+        else {
+            offspring.energy = (this.energy / 2);
+            this.energy -= offspring.energy;
+
+            offspring.x_coord = this.x_coord;
+            offspring.y_coord = this.y_coord;
+            offspring.coordChange(direction, 1);
+
+            babies.add(offspring);
+        }
+	}
 
 	public abstract void doTimeStep();
 	public abstract boolean fight(String oponent);
 	
 	
-	public static void worldTimeStep() {}
+	/** Causes time to move forward */
+	public static void worldTimeStep() {
+		// Do the time steps
+		for(Critter c : population){
+			c.hasMoved = false;
+			c.doTimeStep();
+		}
+		
+		// Resolve the fites
+		encounters();
+		
+		// Update da rest energy
+		for(Critter c: population){
+			c.energy -= Params.rest_energy_cost;
+		}
+		
+		// Add some algae boiii
+		for(int k = 0; k < Params.refresh_algae_count; k++){
+			try{
+				makeCritter("Algae");
+			}
+			catch(Exception e){}
+		}
+		
+		// Add da babies
+		population.addAll(babies);
+		babies.clear();
+		
+		// Remove da ded bugs
+		Iterator<Critter> jj = population.iterator();
+		while(jj.hasNext()){
+			Critter k = jj.next();
+			if(k.energy <= 0)
+				jj.remove();
+		}
+	}
+	
+	/** 
+	 * Takes care of instances of multiple critters occupying the same space
+	 * by having them fight
+	 * Goes through all critters in the population
+	 */
+	private static void encounters(){
+		for(Critter c: population){
+			for(Critter k: population){
+				if(!c.equals(k) && (c.x_coord == k.x_coord) && (c.y_coord == k.y_coord) && (c.energy > 0) && (k.energy > 0)){
+					c.inFight = true;
+					k.inFight = true;
+					boolean cfite = c.fight(k.toString());
+					boolean kfite = k.fight(c.toString());
+					boolean cwins = false;
+					if((c.x_coord == k.x_coord) && (c.y_coord == k.y_coord) && (c.energy > 0) && (k.energy > 0)){
+						int cdmg = (cfite)?getRandomInt(c.energy):0;
+						int kdmg = (kfite)?getRandomInt(k.energy):0;
+						if(cdmg > kdmg)
+							cwins = true;
+						if(cwins){
+							c.energy += k.energy/2;
+							k.energy = -1;
+						}
+						else{
+							k.energy += c.energy/2;
+							c.energy = -1;
+						}
+					}
+					c.inFight = false;
+					k.inFight = false;
+				}
+			}
+		}
+	}
 	
 	public static void displayWorld(Object pane) {} 
 	/* Alternate displayWorld, where you use Main.<pane> to reach into your
@@ -87,13 +258,84 @@ public abstract class Critter {
 	 * critter_class_name must be the name of a concrete subclass of Critter, if not
 	 * an InvalidCritterException must be thrown
 	 */
-	public static void makeCritter(String critter_class_name) throws InvalidCritterException {}
-	
-	public static List<Critter> getInstances(String critter_class_name) throws InvalidCritterException {
-		return null;
+	/**
+	 * create and initialize a Critter subclass.
+	 * critter_class_name must be the unqualified name of a concrete subclass of Critter, if not,
+	 * an InvalidCritterException must be thrown.
+	 * (Java weirdness: Exception throwing does not work properly if the parameter has lower-case instead of
+	 * upper. For example, if craig is supplied instead of Craig, an error is thrown instead of
+	 * an Exception.)
+	 * @param critter_class_name
+	 * @throws InvalidCritterException
+	 */
+	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
+		Class<?> myCritter = null;
+		Constructor<?> constructor = null;
+		Object instanceOfMyCritter = null;
+
+		try {
+			myCritter = Class.forName(myPackage + "." + critter_class_name); 	// Class object of specified name
+		} catch (ClassNotFoundException e) {
+			throw new InvalidCritterException(myPackage + "." + critter_class_name);
+		}
+		try {
+			constructor = myCritter.getConstructor();		// No-parameter constructor object
+			instanceOfMyCritter = constructor.newInstance();	// Create new object using constructor
+		} catch (Exception e) { // various exceptions
+			// Do whatever is needed to handle the various exceptions here -- e.g. rethrow Exception
+			throw new InvalidCritterException(myPackage + "." + critter_class_name);
+		}
+		Critter me = (Critter)instanceOfMyCritter;		// Cast to Critter
+		me.x_coord = getRandomInt(Params.world_width);
+		me.y_coord = getRandomInt(Params.world_height);
+		me.energy = Params.start_energy;
+		population.add(me);
 	}
 	
-	public static void runStats(List<Critter> critters) {}
+	/**
+	 * Gets a list of critters of a specific type.
+	 * @param critter_class_name What kind of Critter is to be listed.  Unqualified class name.
+	 * @return List of Critters.
+	 * @throws InvalidCritterException
+	 */
+	public static List<Critter> getInstances(String critter_class_name) throws InvalidCritterException {
+		List<Critter> result = new ArrayList<Critter>();
+		Class<?> myCritter = null;
+		try {
+			myCritter = Class.forName(myPackage + "." + critter_class_name); 	// Class object of specified name
+		} catch (ClassNotFoundException e) {
+			throw new InvalidCritterException(myPackage + "." + critter_class_name);
+		}
+		for(Critter k : population){
+			if(myCritter.isInstance(k))
+				result.add(k);
+		}
+		return result;
+	}
+	
+	/**
+	 * Prints out how many Critters of each type there are on the board.
+	 * @param critters List of Critters.
+	 */
+	public static void runStats(List<Critter> critters) {
+		System.out.print("" + critters.size() + " critters as follows -- ");
+		java.util.Map<String, Integer> critter_count = new java.util.HashMap<String, Integer>();
+		for (Critter crit : critters) {
+			String crit_string = crit.toString();
+			Integer old_count = critter_count.get(crit_string);
+			if (old_count == null) {
+				critter_count.put(crit_string,  1);
+			} else {
+				critter_count.put(crit_string, old_count.intValue() + 1);
+			}
+		}
+		String prefix = "";
+		for (String s : critter_count.keySet()) {
+			System.out.print(prefix + s + ":" + critter_count.get(s));
+			prefix = ", ";
+		}
+		System.out.println();		
+	}
 	
 	/* the TestCritter class allows some critters to "cheat". If you want to 
 	 * create tests of your Critter model, you can create subclasses of this class
@@ -151,7 +393,32 @@ public abstract class Critter {
 	 * Clear the world of all critters, dead and alive
 	 */
 	public static void clearWorld() {
+		population.clear();
 	}
+	
+	/** 
+	 * Changes coordinates depending on direction and distance
+	 * @param direction 0-7, refers to cardinal directions
+	 * @param distance how many steps to move
+	 */
+	private void coordChange(int direction, int distance) {
+        switch(direction) {
+            case 0: x_coord += distance; break;
+            case 1: x_coord += distance; y_coord -= distance; break;
+            case 2: y_coord -= distance; break;
+            case 3: x_coord -= distance; y_coord -= distance; break;
+            case 4: x_coord -= distance; break;
+            case 5: x_coord -= distance; y_coord += distance; break;
+            case 6: y_coord += distance; break;
+            case 7: x_coord += distance; y_coord += distance; break;
+        }
+        x_coord %= Params.world_width; 
+        if(x_coord < 0)
+        	x_coord += Params.world_width;
+        y_coord %= Params.world_height; 
+        if(y_coord < 0)
+        	y_coord += Params.world_height;
+    }
 	
 	
 }
