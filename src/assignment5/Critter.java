@@ -74,7 +74,8 @@ public abstract class Critter {
 			int init_old_x = old_x;
 			int init_old_y = old_y;
 			energy -= Params.look_energy_cost;
-			
+			x_coord = old_x;
+			y_coord = old_y;
 			if(!steps){ // moving 1 step
 				this.coordChange(direction, 1);
 			}
