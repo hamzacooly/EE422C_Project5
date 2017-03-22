@@ -46,25 +46,58 @@ public abstract class Critter {
 	}
 	
 	protected final String look(int direction, boolean steps) {
-		int initX = x_coord;
-		int initY = y_coord;
-		
-		if(!steps){ // moving 1 step
-			this.coordChange(direction, 1);
-		}
-		else{ // moving 2 steps
-			this.coordChange(direction, 2);
-		}
-		for(Critter c: population){
-			if(c.x_coord == this.x_coord && c.y_coord == this.y_coord){
-				x_coord = initX;
-				y_coord = initY;
-				return c.toString();
+		if(inFight){
+			int initX = x_coord;
+			int initY = y_coord;
+			energy -= Params.look_energy_cost;
+			
+			if(!steps){ // moving 1 step
+				this.coordChange(direction, 1);
 			}
+			else{ // moving 2 steps
+				this.coordChange(direction, 2);
+			}
+			for(Critter c: population){
+				if(c.x_coord == this.x_coord && c.y_coord == this.y_coord){
+					x_coord = initX;
+					y_coord = initY;
+					return c.toString();
+				}
+			}
+			x_coord = initX;
+			y_coord = initY;
+			return null;
 		}
-		x_coord = initX;
-		y_coord = initY;
-		return null;
+		else{
+			int initX = x_coord;
+			int initY = y_coord;
+			int init_old_x = old_x;
+			int init_old_y = old_y;
+			energy -= Params.look_energy_cost;
+			
+			if(!steps){ // moving 1 step
+				this.coordChange(direction, 1);
+			}
+			else{ // moving 2 steps
+				this.coordChange(direction, 2);
+			}
+			old_x = x_coord;
+			old_y = y_coord;
+			for(Critter c: population){
+				if(c.old_x == this.old_x && c.old_y == this.old_y){
+					x_coord = initX;
+					y_coord = initY;
+					old_x = initX;
+					old_y = initY;
+					return c.toString();
+				}
+			}
+			x_coord = initX;
+			y_coord = initY;
+			old_x = init_old_x;
+			old_y = init_old_y;
+			return null;
+		}
 	}
 	
 	/* rest is unchanged from Project 4 */
@@ -88,6 +121,8 @@ public abstract class Critter {
 	
 	private int x_coord;
 	private int y_coord;
+	private int old_x;
+	private int old_y;
 	private boolean hasMoved;
 	private boolean inFight;
 	
@@ -178,6 +213,12 @@ public abstract class Critter {
 	
 	/** Causes time to move forward */
 	public static void worldTimeStep() {
+		// Update old x,y
+		for(Critter c: population){
+			c.old_x = c.x_coord;
+			c.old_y = c.y_coord;
+		}
+		
 		// Do the time steps
 		for(Critter c : population){
 			c.hasMoved = false;
@@ -254,10 +295,6 @@ public abstract class Critter {
 	   // public static void displayWorld() {}
 	*/
 	
-	/* create and initialize a Critter subclass
-	 * critter_class_name must be the name of a concrete subclass of Critter, if not
-	 * an InvalidCritterException must be thrown
-	 */
 	/**
 	 * create and initialize a Critter subclass.
 	 * critter_class_name must be the unqualified name of a concrete subclass of Critter, if not,
