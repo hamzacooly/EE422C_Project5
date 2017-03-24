@@ -1,4 +1,5 @@
-package assignment4;
+
+package assignment5;
 
 /* CRITTERS Critter1.java
  * EE422C Project 4 submission by
@@ -14,7 +15,9 @@ package assignment4;
  */
 
 import java.util.List;
+
 import javafx.scene.paint.Color;
+
 
 public class Critter1 extends Critter {
 
@@ -54,6 +57,7 @@ public class Critter1 extends Critter {
             baby = this.getClass().newInstance();
         }
         catch (InstantiationException | IllegalAccessException e){}
+
 
         int num = Critter.getRandomInt(7);
 

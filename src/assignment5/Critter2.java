@@ -1,4 +1,6 @@
-package assignment4;
+
+package assignment5;
+
 
 /* CRITTERS Critter2.java
  * EE422C Project 4 submission by
@@ -71,6 +73,7 @@ public class Critter2 extends Critter {
         System.out.println();
     }
 
+
     @Override
     public CritterShape viewShape() {
         return CritterShape.SQUARE;
@@ -86,5 +89,6 @@ public class Critter2 extends Critter {
     public Color viewFillColor() {
         return Color.MEDIUMVIOLETRED;
     }
+
 
 }
