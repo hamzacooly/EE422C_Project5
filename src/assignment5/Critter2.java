@@ -1,4 +1,6 @@
+
 package assignment5;
+
 
 /* CRITTERS Critter2.java
  * EE422C Project 4 submission by
@@ -71,10 +73,22 @@ public class Critter2 extends Critter {
         System.out.println();
     }
 
-	@Override
-	public CritterShape viewShape() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+    @Override
+    public CritterShape viewShape() {
+        return CritterShape.SQUARE;
+    }
+
+
+    @Override
+    public Color viewOutlineColor() {
+        return Color.CHARTREUSE;
+    }
+
+    @Override
+    public Color viewFillColor() {
+        return Color.MEDIUMVIOLETRED;
+    }
+
 
 }

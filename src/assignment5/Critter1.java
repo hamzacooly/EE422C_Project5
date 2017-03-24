@@ -1,3 +1,4 @@
+
 package assignment5;
 
 /* CRITTERS Critter1.java
@@ -14,6 +15,9 @@ package assignment5;
  */
 
 import java.util.List;
+
+import javafx.scene.paint.Color;
+
 
 public class Critter1 extends Critter {
 
@@ -54,7 +58,11 @@ public class Critter1 extends Critter {
         }
         catch (InstantiationException | IllegalAccessException e){}
 
-        reproduce(baby, Critter.getRandomInt(7));
+
+        int num = Critter.getRandomInt(7);
+
+        look(num, false);
+        reproduce(baby, num);
 
         return true;
     }
@@ -76,9 +84,19 @@ public class Critter1 extends Critter {
         System.out.println();
     }
 
-	@Override
-	public CritterShape viewShape() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public CritterShape viewShape() {
+        return CritterShape.TRIANGLE;
+    }
+
+
+    @Override
+    public Color viewOutlineColor() {
+        return Color.MAROON;
+    }
+
+    @Override
+    public Color viewFillColor() {
+        return Color.DARKCYAN;
+    }
 }
