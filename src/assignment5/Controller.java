@@ -45,8 +45,7 @@ public class Controller implements Initializable {
 		MakeCritterButton.setOnAction(new EventHandler <ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
-				// TODO Auto-generated method stub
-				
+								
 			}
         });
 		
@@ -74,8 +73,12 @@ public class Controller implements Initializable {
         SeedButton.setOnAction(new EventHandler <ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
-				// TODO Auto-generated method stub
-				
+				try{
+					int seed = Integer.parseInt(SeedTF.getText());
+					Critter.setSeed(seed);
+				}catch(Exception e){
+					
+				}
 			}
         });
         
@@ -83,7 +86,17 @@ public class Controller implements Initializable {
 
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Button pressed!");				
+				TimeStepButton.setDisable(true);
+				RunStatsButton.setDisable(true);
+				SeedButton.setDisable(true);
+				MakeCritterButton.setDisable(true);
+				RunStatsMenuButton.setDisable(true);
+				RunButton.setDisable(true);
+				PauseButton.setDisable(false);
+				MakeCritterTF.setDisable(true);
+				SeedTF.setDisable(true);
+				TimeStepTF.setDisable(true);
+				MakeCritterCB.setDisable(true);
 			}
         	
         });
@@ -91,8 +104,17 @@ public class Controller implements Initializable {
         PauseButton.setOnAction(new EventHandler <ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
-				// TODO Auto-generated method stub
-				
+				TimeStepButton.setDisable(false);
+				RunStatsButton.setDisable(false);
+				SeedButton.setDisable(false);
+				MakeCritterButton.setDisable(false);
+				RunStatsMenuButton.setDisable(false);
+				RunButton.setDisable(false);
+				PauseButton.setDisable(true);
+				MakeCritterTF.setDisable(false);
+				SeedTF.setDisable(false);
+				TimeStepTF.setDisable(false);
+				MakeCritterCB.setDisable(false);
 			}
         });
         
