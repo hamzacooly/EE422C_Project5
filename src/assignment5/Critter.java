@@ -58,7 +58,7 @@ public abstract class Critter {
 				this.coordChange(direction, 2);
 			}
 			for(Critter c: population){
-				if(c.x_coord == this.x_coord && c.y_coord == this.y_coord){
+				if(c.x_coord == this.x_coord && c.y_coord == this.y_coord && c.energy > 0){
 					x_coord = initX;
 					y_coord = initY;
 					return c.toString();
@@ -286,10 +286,11 @@ public abstract class Critter {
 				}
 			}
 		}
-		removeDead();
 	}
 	
-	public static void displayWorld(Object pane) {} 
+	public static void displayWorld(Object pane) {
+		
+	} 
 	/* Alternate displayWorld, where you use Main.<pane> to reach into your
 	   display component.
 	   // public static void displayWorld() {}
