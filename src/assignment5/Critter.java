@@ -288,7 +288,9 @@ public abstract class Critter {
 		}
 	}
 	
-	public static void displayWorld(Object pane) {} 
+	public static void displayWorld(Object pane) {
+		
+	} 
 	/* Alternate displayWorld, where you use Main.<pane> to reach into your
 	   display component.
 	   // public static void displayWorld() {}
