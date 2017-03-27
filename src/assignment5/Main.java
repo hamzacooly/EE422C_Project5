@@ -25,8 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Main extends Application{
-	
-	private ObservableList<CheckMenuItem> list = FXCollections.observableArrayList();
+	Controller C = new Controller();
 
 	public static void main(String[] args) {
 		launch(args);
@@ -34,74 +33,12 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		SplitPane page = (SplitPane) FXMLLoader.load(Main.class.getResource("scenebuilder_shit.fxml"));
 		
-        Scene scene = new Scene(page);
-		MenuButton menuButton = (MenuButton) scene.lookup("#RunStatsMenuButton");
-		ArrayList<String> critters = getBugs();
-		for(String bug : critters){
-			list.add(new CheckMenuItem(bug));
-		}
-		menuButton.getItems().addAll(list);
-//		Button runButton = (Button) scene.lookup("#RunStatsButton");
-//        runButton.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent actionEvent) {
-//                for(MenuItem item : menuButton.getItems()) {
-//                    CheckMenuItem checkMenuItem = (CheckMenuItem) item;
-//                    if(checkMenuItem.isSelected()) {
-//                        System.out.println("Selected item :" + checkMenuItem.getText());
-//                    }
-//                }
-//            }
-//        });
-        
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("scenebuilder_shit.fxml"));
+		Parent root = loader.load();
+		C = loader.getController();
+        Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
-	}
-	
-	/**
-	 * Helper function for getting Critter names
-	 * @return List of folders to check (hardcoded to working dir, bin, and src)
-	 */
-	private ArrayList<String> getFolders(){
-		ArrayList<String> dirs = new ArrayList<String>();
-		String working_dir = System.getProperty("user.dir");
-		dirs.add(working_dir);
-		dirs.add(working_dir + File.separator + "src" + File.separator + "assignment5");
-		dirs.add(working_dir + File.separator + "bin" + File.separator + "assignment5");
-		return dirs;
-	}
-	
-	/**
-	 * Gets names of Critters in working directory, src, and bin.
-	 * @return List of valid Critters
-	 */
-	private ArrayList<String> getBugs(){
-		ArrayList<String> bugs_list = new ArrayList<String>();
-		
-		//gets list of folders in the order of: working_dir, src, bin
-		ArrayList<String> folders = getFolders();
-		for(String dir: folders){
-			File folder = new File(dir);
-			for(File file: folder.listFiles()){
-				if(file.isFile()){
-					String name = file.getName();
-					if(name.contains(".class"))
-						continue;
-					name = name.replaceFirst("[.][^.]+$", "");
-					if(name != "Critter"){
-						try{
-							Critter.makeCritter(name);
-						}
-						catch(Exception e){
-							continue;
-						}
-						bugs_list.add(name);
-					}
-				}
-			}
-		}
-		return bugs_list;
 	}
 }

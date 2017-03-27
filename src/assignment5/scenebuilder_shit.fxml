@@ -13,28 +13,26 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<SplitPane dividerPositions="0.39949748743718594" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<SplitPane dividerPositions="0.39949748743718594" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="assignment5.Controller">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="219.0" prefWidth="598.0">
          <children>
-            <ChoiceBox id="MakeCritterCB" layoutX="95.0" layoutY="15.0" prefWidth="150.0" />
-            <TextField id="TimeStepTF" layoutX="348.0" layoutY="15.0" prefWidth="149.0" promptText="int" />
-            <Button id="TimeStepButton" layoutX="496.0" layoutY="15.0" mnemonicParsing="false" text="TimeStep" />
-            <Button id="RunStatsButton" layoutX="285.0" layoutY="114.0" mnemonicParsing="false" text="RunStats" />
-            <Slider id="SpeedSlider" layoutX="334.0" layoutY="73.0" prefHeight="14.0" prefWidth="96.0" />
-            <TextField id="SeedTF" layoutX="17.0" layoutY="114.0" promptText="int" />
-            <Button id="SeedButton" layoutX="166.0" layoutY="114.0" mnemonicParsing="false" text="Set Seed" />
+            <ChoiceBox fx:id="MakeCritterCB" layoutX="95.0" layoutY="15.0" prefWidth="150.0" />
+            <TextField fx:id="TimeStepTF" layoutX="348.0" layoutY="15.0" prefWidth="149.0" promptText="int" />
+            <Button fx:id="TimeStepButton" layoutX="496.0" layoutY="15.0" mnemonicParsing="false" text="TimeStep" />
+            <Button fx:id="RunStatsButton" layoutX="285.0" layoutY="114.0" mnemonicParsing="false" text="RunStats" />
+            <Slider fx:id="SpeedSlider" layoutX="334.0" layoutY="73.0" prefHeight="14.0" prefWidth="96.0" />
+            <TextField fx:id="SeedTF" layoutX="17.0" layoutY="114.0" promptText="int" />
+            <Button fx:id="SeedButton" layoutX="166.0" layoutY="114.0" mnemonicParsing="false" text="Set Seed" />
             <Label id="SpeedLabel" layoutX="293.0" layoutY="71.0" text="Speed" />
-            <TextField id="MakeCritterTF" layoutX="15.0" layoutY="15.0" prefHeight="25.0" prefWidth="80.0" promptText="int" />
-            <Button id="MakeCritterButton" layoutX="14.0" layoutY="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Make Critter" />
-            <Button id="RunButton" layoutX="480.0" layoutY="66.0" mnemonicParsing="false" text="Run" />
-            <Button id="PauseButton" layoutX="529.0" layoutY="66.0" mnemonicParsing="false" text="Pause" />
-            <Button id="QuitButton" layoutX="531.0" layoutY="114.0" mnemonicParsing="false" text="QUIT" />
-            <TextField id="SpeedTF" layoutX="430.0" layoutY="67.0" prefHeight="25.0" prefWidth="43.0" promptText="int" />
-            <MenuButton id="RunStatsMenuButton" layoutX="348.0" layoutY="114.0" mnemonicParsing="false" text="Select Critters">
+            <TextField fx:id="MakeCritterTF" layoutX="15.0" layoutY="15.0" prefHeight="25.0" prefWidth="80.0" promptText="int" />
+            <Button fx:id="MakeCritterButton" layoutX="14.0" layoutY="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Make Critter" />
+            <Button fx:id="RunButton" layoutX="480.0" layoutY="66.0" mnemonicParsing="false" text="Run" />
+            <Button fx:id="PauseButton" layoutX="529.0" layoutY="66.0" mnemonicParsing="false" text="Pause" />
+            <Button fx:id="QuitButton" layoutX="531.0" layoutY="114.0" mnemonicParsing="false" text="QUIT" />
+            <TextField fx:id="SpeedTF" layoutX="430.0" layoutY="67.0" prefHeight="25.0" prefWidth="43.0" promptText="int" />
+            <MenuButton fx:id="RunStatsMenuButton" layoutX="348.0" layoutY="114.0" mnemonicParsing="false" text="Select Critters">
               <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
-                <MenuItem mnemonicParsing="false" text="Action 2" />
               </items>
             </MenuButton>
          </children></AnchorPane>
