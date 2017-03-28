@@ -38,15 +38,26 @@ public class Controller implements Initializable {
 		ArrayList<String> critters = getBugs();
 		for(String bug : critters){
 			list.add(new CheckMenuItem(bug));
+			MakeCritterCB.getItems().add(bug);
 			System.out.println(bug);
 		}
 		RunStatsMenuButton.getItems().addAll(list);
-		MakeCritterCB.getItems().addAll(list);
 		MakeCritterButton.setOnAction(new EventHandler <ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
 				try{
-					Critter.makeCritter(MakeCritterCB.getValue().toString());
+					int count = 0;
+					if(MakeCritterTF.getText().equals("")){
+						Critter.makeCritter(MakeCritterCB.getValue().toString());
+						System.out.print("x");
+					}
+					else{
+						count = Integer.parseInt(MakeCritterTF.getText());
+						for(int k = 0; k < count; k++){
+							Critter.makeCritter(MakeCritterCB.getValue().toString());
+							System.out.print("x");
+						}
+					}
 				}catch(Exception e){
 					
 				}
@@ -66,8 +77,22 @@ public class Controller implements Initializable {
         TimeStepButton.setOnAction(new EventHandler <ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
-				// TODO Auto-generated method stub
-				
+				try{
+					int count = 0;
+					if(TimeStepTF.getText().equals("")){
+						Critter.worldTimeStep();
+						System.out.print("y");
+					}
+					else{
+						count = Integer.parseInt(TimeStepTF.getText());
+						for(int k = 0; k < count; k++){
+							Critter.worldTimeStep();
+							System.out.print("y");
+						}
+					}
+				}catch(Exception e){
+					
+				}				
 			}
         });
         
@@ -75,8 +100,10 @@ public class Controller implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				try{
-					int seed = Integer.parseInt(SeedTF.getText());
-					Critter.setSeed(seed);
+					if(!SeedTF.getText().equals("")){
+						int seed = Integer.parseInt(SeedTF.getText());
+						Critter.setSeed(seed);
+					}
 				}catch(Exception e){
 					
 				}
