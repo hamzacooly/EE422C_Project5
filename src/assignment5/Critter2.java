@@ -63,19 +63,19 @@ public class Critter2 extends Critter {
      * @return String to be printed
      */
     public static String runStats (List<Critter> critters) {
-        int avgNRG = 0;
-        String s = "";
-        s += "" + critters.size() + " critters as follows -- ";
-    
-        if (critters.size() > 0) {
-            for (Critter c : critters) {
-                avgNRG += ((Critter1)c).getEnergy();
-            }
-            avgNRG /= critters.size();
-        }
-        s += "Avg Energy: " + avgNRG + "\n";
-    
-        return s;
+    	 int avgNRG = 0;
+         String s = "";
+         s += "" + critters.size() + " critters as follows -- ";
+     
+         if (critters.size() > 0) {
+             for (Critter c : critters) {
+                 avgNRG += ((Critter2)c).getEnergy();
+             }
+             avgNRG /= critters.size();
+         }
+         s += "Avg Energy: " + avgNRG + "\n";
+     
+         return s;
     }
 
 

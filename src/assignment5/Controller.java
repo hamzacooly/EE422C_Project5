@@ -31,6 +31,7 @@ import javafx.scene.shape.Circle;
 public class Controller implements Initializable {
 	
 	private ObservableList<CheckMenuItem> list = FXCollections.observableArrayList();
+	public static ObservableList<CheckMenuItem> bugs = FXCollections.observableArrayList();
 	@FXML
 	private Button TimeStepButton, RunStatsButton, SeedButton, MakeCritterButton, RunButton, PauseButton, QuitButton;
 	@FXML
@@ -47,6 +48,7 @@ public class Controller implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {		
 		ArrayList<String> critters = getBugs();
+		Critter.clearWorld();
 		for(String bug : critters){
 			list.add(new CheckMenuItem(bug));
 			MakeCritterCB.getItems().add(bug);
@@ -60,13 +62,11 @@ public class Controller implements Initializable {
 					int count = 0;
 					if(MakeCritterTF.getText().equals("")){
 						Critter.makeCritter(MakeCritterCB.getValue().toString());
-						System.out.print("x");
 					}
 					else{
 						count = Integer.parseInt(MakeCritterTF.getText());
 						for(int k = 0; k < count; k++){
 							Critter.makeCritter(MakeCritterCB.getValue().toString());
-							System.out.print("x");
 						}
 					}
 				}catch(Exception e){
@@ -76,11 +76,11 @@ public class Controller implements Initializable {
         });
 		
         RunStatsButton.setOnAction((event) -> {
+        	bugs.clear();
             for(MenuItem item : RunStatsMenuButton.getItems()) {
                 CheckMenuItem checkMenuItem = (CheckMenuItem) item;
                 if(checkMenuItem.isSelected()) {
-                    //Add in functionality here (i.e. run each critter's RunStats method)
-                	
+                	bugs.add(checkMenuItem);
                 }
             }
         });
@@ -176,6 +176,7 @@ public class Controller implements Initializable {
             rowConst.setPercentHeight(100.0 / numRows);
             Grid.getRowConstraints().add(rowConst);         
         }
+        Critter.displayWorld(Grid);
 	}
 	
 	private StackPane createCell(BooleanProperty cellSwitch) {
