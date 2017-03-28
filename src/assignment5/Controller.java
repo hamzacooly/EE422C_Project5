@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,6 +20,13 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 public class Controller implements Initializable {
 	
@@ -32,6 +41,8 @@ public class Controller implements Initializable {
 	private Slider SpeedSlider;
 	@FXML
 	private ChoiceBox MakeCritterCB;
+	@FXML
+	private GridPane Grid;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {		
@@ -152,7 +163,35 @@ public class Controller implements Initializable {
 				System.exit(0);				
 			}
         });
+        Grid.setGridLinesVisible(true);
+        int numCols = Params.world_width;
+        int numRows = Params.world_height;
+        for (int i = 0; i < numCols; i++) {
+            ColumnConstraints colConst = new ColumnConstraints();
+            colConst.setPercentWidth(100.0 / numCols);
+            Grid.getColumnConstraints().add(colConst);
+        }
+        for (int i = 0; i < numRows; i++) {
+            RowConstraints rowConst = new RowConstraints();
+            rowConst.setPercentHeight(100.0 / numRows);
+            Grid.getRowConstraints().add(rowConst);         
+        }
 	}
+	
+	private StackPane createCell(BooleanProperty cellSwitch) {
+
+        StackPane cell = new StackPane();
+
+        cell.setOnMouseClicked(e -> cellSwitch.set(! cellSwitch.get() ));
+
+        Circle circle = new Circle(10, Color.CORNFLOWERBLUE);
+
+        circle.visibleProperty().bind(cellSwitch);
+
+        cell.getChildren().add(circle);
+        cell.getStyleClass().add("cell");
+        return cell;
+    }
 	
 	/**
 	 * Helper function for getting Critter names
