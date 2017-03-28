@@ -58,19 +58,23 @@ public class Critter2 extends Critter {
 
     /**
      * Displays total number of critters, along with average energy
-     * @param critters List of Critter2 objects in population
+     * @param critters List of Critter1 objects in population
+     * @return String to be printed
      */
-    public static void runStats (List<Critter> critters) {
-        System.out.print("Total Critter2's: " + critters.size() + "\t");
+    public static String runStats (List<Critter> critters) {
+        int avgNRG = 0;
+        String s = "";
+        s += "" + critters.size() + " critters as follows -- ";
+    
         if (critters.size() > 0) {
-            int avgNRG = 0;
             for (Critter c : critters) {
                 avgNRG += ((Critter1)c).getEnergy();
             }
             avgNRG /= critters.size();
-            System.out.print("Avg Energy: " + avgNRG);
         }
-        System.out.println();
+        s += "Avg Energy: " + avgNRG + "\n";
+    
+        return s;
     }
 
 
