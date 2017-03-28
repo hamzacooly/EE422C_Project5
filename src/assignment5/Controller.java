@@ -45,7 +45,11 @@ public class Controller implements Initializable {
 		MakeCritterButton.setOnAction(new EventHandler <ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
-								
+				try{
+					Critter.makeCritter(MakeCritterCB.getValue().toString());
+				}catch(Exception e){
+					
+				}
 			}
         });
 		
