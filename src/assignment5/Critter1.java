@@ -1,3 +1,4 @@
+
 package assignment5;
 
 /* CRITTERS Critter1.java
@@ -14,6 +15,9 @@ package assignment5;
  */
 
 import java.util.List;
+
+import javafx.scene.paint.Color;
+
 
 public class Critter1 extends Critter {
 
@@ -54,7 +58,11 @@ public class Critter1 extends Critter {
         }
         catch (InstantiationException | IllegalAccessException e){}
 
-        reproduce(baby, Critter.getRandomInt(7));
+
+        int num = Critter.getRandomInt(7);
+
+        look(num, false);
+        reproduce(baby, num);
 
         return true;
     }
@@ -62,23 +70,37 @@ public class Critter1 extends Critter {
     /**
      * Displays total number of critters, along with average energy
      * @param critters List of Critter1 objects in population
+     * @return String to be printed
      */
-    public static void runStats (List<Critter> critters) {
-        System.out.print("Total Critter1's: " + critters.size() + "\t");
+    public static String runStats (List<Critter> critters) {
+        int avgNRG = 0;
+        String s = "";
+        s += "" + critters.size() + " critters as follows -- ";
+    
         if (critters.size() > 0) {
-            int avgNRG = 0;
             for (Critter c : critters) {
                 avgNRG += ((Critter1)c).getEnergy();
             }
             avgNRG /= critters.size();
-            System.out.print("Avg Energy: " + avgNRG);
         }
-        System.out.println();
+        s += "Avg Energy: " + avgNRG + "\n";
+    
+        return s;
     }
 
-	@Override
-	public CritterShape viewShape() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public CritterShape viewShape() {
+        return CritterShape.TRIANGLE;
+    }
+
+
+    @Override
+    public Color viewOutlineColor() {
+        return Color.MAROON;
+    }
+
+    @Override
+    public Color viewFillColor() {
+        return Color.DARKCYAN;
+    }
 }
