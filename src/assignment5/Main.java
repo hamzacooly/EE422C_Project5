@@ -50,6 +50,7 @@ public class Main extends Application{
         primaryStage.setScene(scene);
         primaryStage.setTitle("Critters Controller");
         primaryStage.show();
+        
         Stage secondStage = new Stage();
         VBox box = new VBox();
         TextArea TA = new TextArea();

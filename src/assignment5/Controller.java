@@ -27,6 +27,9 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 
 public class Controller implements Initializable {
 	
@@ -47,6 +50,13 @@ public class Controller implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {		
+		Timeline GridDisplay = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				Critter.displayWorld(Grid);
+			}
+		}));
 		ArrayList<String> critters = getBugs();
 		Critter.clearWorld();
 		for(String bug : critters){
@@ -136,8 +146,8 @@ public class Controller implements Initializable {
 				SeedTF.setDisable(true);
 				TimeStepTF.setDisable(true);
 				MakeCritterCB.setDisable(true);
+				GridDisplay.play();
 			}
-        	
         });
         
         PauseButton.setOnAction(new EventHandler <ActionEvent>(){
@@ -154,6 +164,7 @@ public class Controller implements Initializable {
 				SeedTF.setDisable(false);
 				TimeStepTF.setDisable(false);
 				MakeCritterCB.setDisable(false);
+				GridDisplay.pause();
 			}
         });
         
