@@ -18,7 +18,6 @@ package assignment5;
 import java.util.List;
 import javafx.scene.paint.Color;
 
-import javafx.scene.paint.Color;
 
 public class Critter2 extends Critter {
 
@@ -61,7 +60,7 @@ public class Critter2 extends Critter {
 
     /**
      * Displays total number of critters, along with average energy
-     * @param critters List of Critter1 objects in population
+     * @param critters List of Critter2 objects in population
      * @return String to be printed
      */
     public static String runStats (List<Critter> critters) {
@@ -71,7 +70,7 @@ public class Critter2 extends Critter {
     
         if (critters.size() > 0) {
             for (Critter c : critters) {
-                avgNRG += ((Critter1)c).getEnergy();
+                avgNRG += ((Critter2)c).getEnergy();
             }
             avgNRG /= critters.size();
         }
