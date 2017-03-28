@@ -69,8 +69,9 @@ public class Critter4 extends Critter{
 	 * Displays total # critters, avg confidence, and avg intellect.
 	 * @param critters List of Critter4 objects in the population
 	 */
-	public static void runStats(java.util.List<Critter> critters){
-		System.out.print("Total Critter4's: " + critters.size() + "\t");
+	public static String runStats(java.util.List<Critter> critters){
+		String ret = "";
+		ret += "Total Critter4's: " + critters.size() + "\t";
 		if(critters.size() > 0){
 			int avgconf = 0;
 			int avgint = 0;
@@ -80,10 +81,11 @@ public class Critter4 extends Critter{
 			}
 			avgconf /= critters.size();
 			avgint /= critters.size();
-			System.out.print("Avg Confidence: " + avgconf + "\t");
-			System.out.print("Avg Intellect: " + avgint);
+			ret += "Avg Confidence: " + avgconf + "\t";
+			ret += "Avg Intellect: " + avgint;
 		}
-		System.out.println();
+		ret += "\n";
+		return ret;
 	}
 
 	@Override

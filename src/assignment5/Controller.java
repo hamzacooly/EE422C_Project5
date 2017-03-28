@@ -49,15 +49,12 @@ public class Controller implements Initializable {
 			}
         });
 		
-        RunStatsButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                for(MenuItem item : RunStatsMenuButton.getItems()) {
-                    CheckMenuItem checkMenuItem = (CheckMenuItem) item;
-                    if(checkMenuItem.isSelected()) {
-                        //Add in functionality here (i.e. run each critter's RunStats method)
-                    	
-                    }
+        RunStatsButton.setOnAction((event) -> {
+            for(MenuItem item : RunStatsMenuButton.getItems()) {
+                CheckMenuItem checkMenuItem = (CheckMenuItem) item;
+                if(checkMenuItem.isSelected()) {
+                    //Add in functionality here (i.e. run each critter's RunStats method)
+                	
                 }
             }
         });

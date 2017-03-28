@@ -71,8 +71,9 @@ public class Critter3 extends Critter {
 	 * Displays total # critters, avg aggressiveness, and avg age.
 	 * @param critters List of Critter3 objects in the population
 	 */
-	public static void runStats(List<Critter> critters){
-		System.out.print("Total Critter3's: " + critters.size() + "\t");
+	public static String runStats(List<Critter> critters){
+		String ret = "";
+		ret += "Total Critter3's: " + critters.size() + "\t";
 		if(critters.size() > 0){
 			int avgAg = 0;
 			int avgAge = 0;
@@ -82,10 +83,11 @@ public class Critter3 extends Critter {
 			}
 			avgAg /= critters.size();
 			avgAge /= critters.size();
-			System.out.print("Avg Aggressiveness: " + avgAg + "\t");
-			System.out.print("Avg Age: " + avgAge);
+			ret += "Avg Aggressiveness: " + avgAg + "\t";
+			ret += "Avg Age: " + avgAge;
 		}
-		System.out.println();
+		ret += "\n";
+		return ret;
 	}
 
 	@Override
