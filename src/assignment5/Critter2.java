@@ -17,6 +17,8 @@ package assignment5;
 
 import java.util.List;
 
+import javafx.scene.paint.Color;
+
 public class Critter2 extends Critter {
 
 
