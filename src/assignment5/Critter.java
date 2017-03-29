@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 
 public abstract class Critter {
@@ -42,7 +45,8 @@ public abstract class Critter {
 	private static String myPackage;
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
-
+	private static int[][] world = new int[Params.world_width][Params.world_height];
+	private static Object[][] nodes = new Object[Params.world_width][Params.world_height];
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 	static {
 		myPackage = Critter.class.getPackage().toString().split(" ")[1];
@@ -293,32 +297,34 @@ public abstract class Critter {
 	
 	public static void displayWorld(Object pane) {
 		GridPane grid = (GridPane) pane;
-		int[][] world = new int[Params.world_width][Params.world_height];
 		if(population.size() > 0){
 			for(int k = 0; k < population.size(); k++){
 				int x = population.get(k).x_coord;
 				int y = population.get(k).y_coord;
-				if(world[x][y] == 0)
+				if(world[x][y] == 0){
 					world[x][y] = k;
+				}
 			}
 		}
 		for(int x = 0; x < Params.world_width; x++){
 			for(int y = 0; y < Params.world_height; y++){
 				if(world[x][y] != 0){
-//					switch(population.get(world[x][y]).viewShape()){
-//					case DIAMOND:
-//						
-//					case SQUARE:
-//						
-//					case STAR: 
-//						
-//					case CIRCLE:
-//						
-//					case TRIANGLE:
-//						
-//					}
-					Circle circle = new Circle(7);
-					grid.add(circle, x, y);
+					switch(population.get(world[x][y]).viewShape()){
+					case DIAMOND:
+						
+					case SQUARE:
+						Rectangle rect = new Rectangle(grid.getWidth()/Params.world_width - 5, grid.getHeight()/Params.world_height - 5);
+						grid.add(rect, y, x);
+						break;
+					case STAR: 
+						
+					case TRIANGLE:
+						
+					case CIRCLE:
+						Circle circle = new Circle(grid.getWidth()/Params.world_width - 20);
+						grid.add(circle, y, x);
+						break;						
+					}
 				}
 			}
 		}
