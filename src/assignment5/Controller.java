@@ -13,6 +13,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ChoiceBox;
@@ -47,16 +49,20 @@ public class Controller implements Initializable {
 	private ChoiceBox MakeCritterCB;
 	@FXML
 	private GridPane Grid;
+	public static Timeline GridDisplay;
+	 
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {		
-		Timeline GridDisplay = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+		GridDisplay = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg0) {
 				Critter.displayWorld(Grid);
 			}
 		}));
+		GridDisplay.setCycleCount(Timeline.INDEFINITE);
+		GridDisplay.play();
 		ArrayList<String> critters = getBugs();
 		Critter.clearWorld();
 		for(String bug : critters){
@@ -102,13 +108,11 @@ public class Controller implements Initializable {
 					int count = 0;
 					if(TimeStepTF.getText().equals("")){
 						Critter.worldTimeStep();
-						System.out.print("y");
 					}
 					else{
 						count = Integer.parseInt(TimeStepTF.getText());
 						for(int k = 0; k < count; k++){
 							Critter.worldTimeStep();
-							System.out.print("y");
 						}
 					}
 				}catch(Exception e){
@@ -146,7 +150,7 @@ public class Controller implements Initializable {
 				SeedTF.setDisable(true);
 				TimeStepTF.setDisable(true);
 				MakeCritterCB.setDisable(true);
-				GridDisplay.play();
+				//GridDisplay.play();
 			}
         });
         
@@ -164,7 +168,7 @@ public class Controller implements Initializable {
 				SeedTF.setDisable(false);
 				TimeStepTF.setDisable(false);
 				MakeCritterCB.setDisable(false);
-				GridDisplay.pause();
+				//GridDisplay.pause();
 			}
         });
         
@@ -180,30 +184,17 @@ public class Controller implements Initializable {
         for (int i = 0; i < numCols; i++) {
             ColumnConstraints colConst = new ColumnConstraints();
             colConst.setPercentWidth(100.0 / numCols);
+            colConst.setHalignment(HPos.CENTER);
             Grid.getColumnConstraints().add(colConst);
         }
         for (int i = 0; i < numRows; i++) {
             RowConstraints rowConst = new RowConstraints();
             rowConst.setPercentHeight(100.0 / numRows);
+            rowConst.setValignment(VPos.CENTER);
             Grid.getRowConstraints().add(rowConst);         
         }
         Critter.displayWorld(Grid);
 	}
-	
-	private StackPane createCell(BooleanProperty cellSwitch) {
-
-        StackPane cell = new StackPane();
-
-        cell.setOnMouseClicked(e -> cellSwitch.set(! cellSwitch.get() ));
-
-        Circle circle = new Circle(10, Color.CORNFLOWERBLUE);
-
-        circle.visibleProperty().bind(cellSwitch);
-
-        cell.getChildren().add(circle);
-        cell.getStyleClass().add("cell");
-        return cell;
-    }
 	
 	/**
 	 * Helper function for getting Critter names

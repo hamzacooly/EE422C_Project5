@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Circle;
+
 
 public abstract class Critter {
 	/* NEW FOR PROJECT 5 */
@@ -289,7 +292,36 @@ public abstract class Critter {
 	}
 	
 	public static void displayWorld(Object pane) {
-		
+		GridPane grid = (GridPane) pane;
+		int[][] world = new int[Params.world_width][Params.world_height];
+		if(population.size() > 0){
+			for(int k = 0; k < population.size(); k++){
+				int x = population.get(k).x_coord;
+				int y = population.get(k).y_coord;
+				if(world[x][y] == 0)
+					world[x][y] = k;
+			}
+		}
+		for(int x = 0; x < Params.world_width; x++){
+			for(int y = 0; y < Params.world_height; y++){
+				if(world[x][y] != 0){
+//					switch(population.get(world[x][y]).viewShape()){
+//					case DIAMOND:
+//						
+//					case SQUARE:
+//						
+//					case STAR: 
+//						
+//					case CIRCLE:
+//						
+//					case TRIANGLE:
+//						
+//					}
+					Circle circle = new Circle(7);
+					grid.add(circle, x, y);
+				}
+			}
+		}
 	} 
 	/* Alternate displayWorld, where you use Main.<pane> to reach into your
 	   display component.
