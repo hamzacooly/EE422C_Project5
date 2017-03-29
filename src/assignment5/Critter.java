@@ -297,12 +297,22 @@ public abstract class Critter {
 	
 	public static void displayWorld(Object pane) {
 		GridPane grid = (GridPane) pane;
+		for(int k = 0; k < world.length; k++){
+			for(int j = 0; j < world[k].length; j++){
+				world[k][j] = 0;
+			}
+		}
 		if(population.size() > 0){
 			for(int k = 0; k < population.size(); k++){
 				int x = population.get(k).x_coord;
 				int y = population.get(k).y_coord;
 				if(world[x][y] == 0){
 					world[x][y] = k;
+					// CREATE A FUNCTION THAT RETURNS A CANVAS OBJECT
+					// THEN WE CAN ADD IT TO THE NODES MATRIX
+					// TO KEEP TRACK OF WHAT NODE CORRESPONDS TO WHAT CRITTER
+					// Something like:
+					// private Canvas getShape(CritterShape shape)
 				}
 			}
 		}
