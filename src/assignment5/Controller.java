@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
+import javafx.scene.CacheHint;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ChoiceBox;
@@ -53,16 +54,22 @@ public class Controller implements Initializable {
 	 
 
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {		
-		GridDisplay = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+	public void initialize(URL arg0, ResourceBundle arg1) {	
+		SpeedSlider.setMax(100);
+		SpeedSlider.setMin(1);
+		Grid.setCache(true);
+		Grid.setCacheShape(true);
+		Grid.setCacheHint(CacheHint.SPEED);
+		GridDisplay = new Timeline(new KeyFrame(Duration.millis(300), new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg0) {
+				for(int k = 0; k < SpeedSlider.getValue(); k++){
+					Critter.worldTimeStep();
+				}
 				Critter.displayWorld(Grid);
 			}
 		}));
-		GridDisplay.setCycleCount(Timeline.INDEFINITE);
-		GridDisplay.play();
 		ArrayList<String> critters = getBugs();
 		Critter.clearWorld();
 		for(String bug : critters){
@@ -115,6 +122,7 @@ public class Controller implements Initializable {
 							Critter.worldTimeStep();
 						}
 					}
+					Critter.displayWorld(Grid);
 				}catch(Exception e){
 					
 				}				
@@ -150,7 +158,8 @@ public class Controller implements Initializable {
 				SeedTF.setDisable(true);
 				TimeStepTF.setDisable(true);
 				MakeCritterCB.setDisable(true);
-				//GridDisplay.play();
+				GridDisplay.setCycleCount((int) SpeedSlider.getValue()*100);
+				GridDisplay.play();
 			}
         });
         
@@ -168,7 +177,7 @@ public class Controller implements Initializable {
 				SeedTF.setDisable(false);
 				TimeStepTF.setDisable(false);
 				MakeCritterCB.setDisable(false);
-				//GridDisplay.pause();
+				GridDisplay.pause();
 			}
         });
         

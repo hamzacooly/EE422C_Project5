@@ -3,6 +3,7 @@ package assignment5;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.scene.CacheHint;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -55,7 +56,10 @@ public class Main extends Application{
         Stage secondStage = new Stage();
         VBox box = new VBox();
         TextArea TA = new TextArea();
-        Timeline Updater = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {  
+        TA.setCache(true);
+        TA.setCacheShape(true);
+        TA.setCacheHint(CacheHint.SPEED);
+        Timeline Updater = new Timeline(new KeyFrame(Duration.millis(300), new EventHandler<ActionEvent>() {  
             @Override  
             public void handle(ActionEvent event) { 
               TA.clear();
