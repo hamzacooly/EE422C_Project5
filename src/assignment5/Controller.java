@@ -33,6 +33,7 @@ import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.AnimationTimer;
 
 public class Controller implements Initializable {
 	
@@ -50,7 +51,7 @@ public class Controller implements Initializable {
 	private ChoiceBox MakeCritterCB;
 	@FXML
 	private GridPane Grid;
-	public static Timeline GridDisplay;
+	public static AnimationTimer GridDisplay;
 	 
 
 	@Override
@@ -60,16 +61,19 @@ public class Controller implements Initializable {
 		Grid.setCache(true);
 		Grid.setCacheShape(true);
 		Grid.setCacheHint(CacheHint.SPEED);
-		GridDisplay = new Timeline(new KeyFrame(Duration.millis(300), new EventHandler<ActionEvent>() {
-
+		GridDisplay = new AnimationTimer(){
+			private long prev = 0;
 			@Override
-			public void handle(ActionEvent arg0) {
-				for(int k = 0; k < SpeedSlider.getValue(); k++){
+			public void handle(long now) {
+				long delay = 1_000_000_000/((long)SpeedSlider.getValue());
+				// TODO Auto-generated method stub
+				if(now - prev >= delay){
 					Critter.worldTimeStep();
+					Critter.displayWorld(Grid);
+					prev = now;
 				}
-				Critter.displayWorld(Grid);
 			}
-		}));
+		};
 		ArrayList<String> critters = getBugs();
 		Critter.clearWorld();
 		for(String bug : critters){
@@ -158,8 +162,7 @@ public class Controller implements Initializable {
 				SeedTF.setDisable(true);
 				TimeStepTF.setDisable(true);
 				MakeCritterCB.setDisable(true);
-				GridDisplay.setCycleCount((int) SpeedSlider.getValue()*100);
-				GridDisplay.play();
+				GridDisplay.start();
 			}
         });
         
@@ -177,7 +180,7 @@ public class Controller implements Initializable {
 				SeedTF.setDisable(false);
 				TimeStepTF.setDisable(false);
 				MakeCritterCB.setDisable(false);
-				GridDisplay.pause();
+				GridDisplay.stop();
 			}
         });
         
