@@ -56,17 +56,19 @@ public class Controller implements Initializable {
 	private GridPane Grid;
 	@FXML
 	private TextArea TA;
-	public static AnimationTimer GridDisplay;
 	 
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {	
+		//Set the min and max values for the Speed of Animation
 		SpeedSlider.setMax(1000);
 		SpeedSlider.setMin(1);
+		
+		//AnimationTimer for the display of the grid.
 		Grid.setCache(true);
 		Grid.setCacheShape(true);
 		Grid.setCacheHint(CacheHint.SPEED);
-		GridDisplay = new AnimationTimer(){
+		AnimationTimer GridDisplay = new AnimationTimer(){
 			private long prev = 0;
 			@Override
 			public void handle(long now) {
@@ -90,6 +92,8 @@ public class Controller implements Initializable {
 				}
 			}
 		};
+		
+		//Initialize what critters we have in our folders.
 		ArrayList<String> critters = getBugs();
 		Critter.clearWorld();
 		for(String bug : critters){
@@ -98,6 +102,7 @@ public class Controller implements Initializable {
 			System.out.println(bug);
 		}
 		RunStatsMenuButton.getItems().addAll(list);
+		
 		MakeCritterButton.setOnAction(new EventHandler <ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
@@ -206,6 +211,8 @@ public class Controller implements Initializable {
 				System.exit(0);				
 			}
         });
+        
+        //Set up the Grid
         Grid.setGridLinesVisible(true);
         int numCols = Params.world_width;
         int numRows = Params.world_height;
@@ -223,13 +230,13 @@ public class Controller implements Initializable {
         }
         Critter.displayWorld(Grid);
         
+        //Handles the RunStats Display
         TA.setCache(true);
         TA.setCacheShape(true);
         TA.setCacheHint(CacheHint.SPEED);
         AnimationTimer timer = new AnimationTimer(){
 			@Override
 			public void handle(long now) {
-				// TODO Auto-generated method stub
 				TA.clear();
 	              for(MenuItem item : Controller.bugs){
 	            	  CheckMenuItem checkMenuItem = (CheckMenuItem) item;
