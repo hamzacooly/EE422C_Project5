@@ -44,23 +44,12 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("scenebuilder_shit.fxml"));
-		
 		Parent root = loader.load();
 		C = loader.getController();
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Critters Controller");
         primaryStage.show();
-        
-//        Stage secondStage = new Stage();
-//        VBox box = new VBox();
-//        TextArea TA = new TextArea();
-//        
-//        box.getChildren().addAll(TA);
-//        Scene scene2 = new Scene(box, 500, 250);
-//        secondStage.setScene(scene2);
-//        secondStage.show();
 	}
 }
