@@ -61,7 +61,7 @@ public class Controller implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {	
 		//Set the min and max values for the Speed of Animation
-		SpeedSlider.setMax(1000);
+		SpeedSlider.setMax(100);
 		SpeedSlider.setMin(1);
 		
 		//AnimationTimer for the display of the grid.

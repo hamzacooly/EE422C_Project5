@@ -9,8 +9,13 @@ import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -48,9 +53,7 @@ public abstract class Critter {
 	
 	private static String myPackage;
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
-	private static List<Critter> oldPop = new ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
-	private static int[][] world = new int[Params.world_width][Params.world_height];
 	private static Map<Critter, Shape> nodes = new HashMap<>();
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 	static {
@@ -303,30 +306,11 @@ public abstract class Critter {
 	public static void displayWorld(Object pane) {
 		GridPane grid = (GridPane) pane;
 		
-		//remove from map ded bugs
-		for(int k = 0; k < oldPop.size(); k++){
-			if(!population.contains(oldPop.get(k))){
-				grid.getChildren().remove(nodes.get(oldPop.get(k)));
-				nodes.remove(oldPop.get(k));
-			}
-		}
+		Node node = grid.getChildren().get(0);
+		grid.getChildren().clear();
+		grid.getChildren().add(0,node);
 		
-		//update old pop
-		oldPop.clear();
-		for(Critter c : population){
-			oldPop.add(c);
-		}
-		
-		//initialize our grid
-		for(int k = 0; k < Params.world_width; k++){
-			for(int j = 0; j < Params.world_height; j++){
-				if(world[k][j] != 0){
-					if(grid.getChildren().contains(nodes.get(population.get(world[k][j] -1 ))))
-						grid.getChildren().remove(nodes.get(population.get(world[k][j] -1 )));
-				}
-				world[k][j] = 0;
-			}
-		}
+		nodes.clear();
 		
 		//update our map
 		for(Critter c: population){
@@ -342,19 +326,11 @@ public abstract class Critter {
 			nodes.put(c, shape);
 		}
 		
-		for(int k = 0; k < population.size(); k++){
-			int x = population.get(k).x_coord;
-			int y = population.get(k).y_coord;
-			if(world[x][y] == 0){
-				world[x][y] = k+1;
-			}
-		}
-		
-		for(int x = 0; x < Params.world_width; x++){
-			for(int y = 0; y < Params.world_height; y++){
-				if(world[x][y] != 0){
-					grid.add(nodes.get(population.get(world[x][y] - 1)), y, x);
-				}
+		boolean[][] isOccupied = new boolean[Params.world_width][Params.world_height];
+		for(Critter c: population){
+			if(!isOccupied[c.x_coord][c.y_coord]){
+				grid.add(nodes.get(c), c.y_coord, c.x_coord);
+				isOccupied[c.x_coord][c.y_coord] = true;
 			}
 		}
 	} 
