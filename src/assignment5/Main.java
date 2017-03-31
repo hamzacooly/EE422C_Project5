@@ -54,48 +54,13 @@ public class Main extends Application{
         primaryStage.setTitle("Critters Controller");
         primaryStage.show();
         
-        Stage secondStage = new Stage();
-        VBox box = new VBox();
-        TextArea TA = new TextArea();
-        TA.setCache(true);
-        TA.setCacheShape(true);
-        TA.setCacheHint(CacheHint.SPEED);
-        AnimationTimer timer = new AnimationTimer(){
-			@Override
-			public void handle(long now) {
-				// TODO Auto-generated method stub
-				TA.clear();
-	              for(MenuItem item : Controller.bugs){
-	            	  CheckMenuItem checkMenuItem = (CheckMenuItem) item;
-	                  if(checkMenuItem.isSelected()) {
-	                	  List<Critter> critters = new ArrayList<>();
-	                	  String name = checkMenuItem.getText();
-	                	  String text;
-	                	  try{
-	  	            		critters = Critter.getInstances(name);
-		  	            	}
-		  	            	catch(Exception e){
-		  	            	}
-		  	            	Class<?> myCritter = null;
-		  	        		try {
-		  	        			myCritter = Class.forName("assignment5." + name); 	// Class object of specified name
-		  	        		} catch (ClassNotFoundException e) {
-		  	        		}
-		  	        		try{
-		  	        			Method method = myCritter.getMethod("runStats", List.class);
-		  	        			TA.appendText((String) method.invoke(null, critters));
-		  	        		}
-		  	        		catch(Exception e){
-		  	        			TA.appendText(Critter.runStats(critters));
-		  	        		}
-	                  }
-	              }
-			}  
-        };
-        timer.start();
-        box.getChildren().addAll(TA);
-        Scene scene2 = new Scene(box, 500, 250);
-        secondStage.setScene(scene2);
-        secondStage.show();
+//        Stage secondStage = new Stage();
+//        VBox box = new VBox();
+//        TextArea TA = new TextArea();
+//        
+//        box.getChildren().addAll(TA);
+//        Scene scene2 = new Scene(box, 500, 250);
+//        secondStage.setScene(scene2);
+//        secondStage.show();
 	}
 }

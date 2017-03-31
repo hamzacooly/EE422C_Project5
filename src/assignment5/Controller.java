@@ -1,8 +1,10 @@
 package assignment5;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.BooleanProperty;
@@ -22,6 +24,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -51,12 +54,14 @@ public class Controller implements Initializable {
 	private ChoiceBox MakeCritterCB;
 	@FXML
 	private GridPane Grid;
+	@FXML
+	private TextArea TA;
 	public static AnimationTimer GridDisplay;
 	 
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {	
-		SpeedSlider.setMax(100);
+		SpeedSlider.setMax(1000);
 		SpeedSlider.setMin(1);
 		Grid.setCache(true);
 		Grid.setCacheShape(true);
@@ -65,7 +70,18 @@ public class Controller implements Initializable {
 			private long prev = 0;
 			@Override
 			public void handle(long now) {
-				long delay = 1_000_000_000/((long)SpeedSlider.getValue());
+				long slideval;
+				try{
+					slideval = Integer.parseInt(SpeedTF.getText());
+					if(slideval <= 0)
+						slideval = (long)SpeedSlider.getValue();
+					else
+						SpeedSlider.setValue((double)slideval);
+				}
+				catch(Exception e){
+					slideval = (long)SpeedSlider.getValue();
+				}
+				long delay = 1_000_000_000/slideval;
 				// TODO Auto-generated method stub
 				if(now - prev >= delay){
 					Critter.worldTimeStep();
@@ -206,6 +222,43 @@ public class Controller implements Initializable {
             Grid.getRowConstraints().add(rowConst);         
         }
         Critter.displayWorld(Grid);
+        
+        TA.setCache(true);
+        TA.setCacheShape(true);
+        TA.setCacheHint(CacheHint.SPEED);
+        AnimationTimer timer = new AnimationTimer(){
+			@Override
+			public void handle(long now) {
+				// TODO Auto-generated method stub
+				TA.clear();
+	              for(MenuItem item : Controller.bugs){
+	            	  CheckMenuItem checkMenuItem = (CheckMenuItem) item;
+	                  if(checkMenuItem.isSelected()) {
+	                	  List<Critter> critters = new ArrayList<>();
+	                	  String name = checkMenuItem.getText();
+	                	  String text;
+	                	  try{
+	  	            		critters = Critter.getInstances(name);
+		  	            	}
+		  	            	catch(Exception e){
+		  	            	}
+		  	            	Class<?> myCritter = null;
+		  	        		try {
+		  	        			myCritter = Class.forName("assignment5." + name); 	// Class object of specified name
+		  	        		} catch (ClassNotFoundException e) {
+		  	        		}
+		  	        		try{
+		  	        			Method method = myCritter.getMethod("runStats", List.class);
+		  	        			TA.appendText((String) method.invoke(null, critters));
+		  	        		}
+		  	        		catch(Exception e){
+		  	        			TA.appendText(Critter.runStats(critters));
+		  	        		}
+	                  }
+	              }
+			}  
+        };
+        timer.start();
 	}
 	
 	/**
