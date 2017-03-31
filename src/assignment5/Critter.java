@@ -13,6 +13,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -54,7 +55,7 @@ public abstract class Critter {
 	private static String myPackage;
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
-	private static Map<Critter, Shape> nodes = new HashMap<>();
+	private static Map<Critter, Canvas> nodes = new HashMap<>();
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 	static {
 		myPackage = Critter.class.getPackage().toString().split(" ")[1];
@@ -314,16 +315,20 @@ public abstract class Critter {
 		
 		//update our map
 		for(Critter c: population){
-			Shape shape = getShape(c.viewShape());
-			if(shape instanceof Circle)
-				((Circle)shape).setRadius((grid.getHeight()/Params.world_height)/2 - 5);
-			else{
-				((Rectangle)shape).setWidth(grid.getWidth()/Params.world_width - 5);
-				((Rectangle)shape).setHeight(grid.getHeight()/Params.world_height - 5);
-			}
-			shape.setFill(c.viewFillColor());
-			shape.setStroke(c.viewOutlineColor());
-			nodes.put(c, shape);
+//			Shape shape = getShape(c.viewShape());
+//			if(shape instanceof Circle)
+//				((Circle)shape).setRadius((grid.getHeight()/Params.world_height)/2 - 5);
+//			else{
+//				((Rectangle)shape).setWidth(grid.getWidth()/Params.world_width - 5);
+//				((Rectangle)shape).setHeight(grid.getHeight()/Params.world_height - 5);
+//			}
+//			shape.setFill(c.viewFillColor());
+//			shape.setStroke(c.viewOutlineColor());
+//			nodes.put(c, shape);
+            double w = grid.getWidth()/Params.world_width;
+            double h = grid.getHeight()/Params.world_height;
+            Canvas canvas = getShape(c, w, h);
+			nodes.put(c, canvas);
 		}
 		
 		boolean[][] isOccupied = new boolean[Params.world_width][Params.world_height];
@@ -339,9 +344,52 @@ public abstract class Critter {
 	   // public static void displayWorld() {}
 	*/
 	
-	private static Shape getShape(CritterShape viewShape) {
+	private static Canvas getShape(Critter c, double w, double h) {
 		// TODO Auto-generated method stub
-		return Math.random() > 0.01 ? new Circle() : new Rectangle();
+		Canvas canvas = new Canvas(w, h);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        CritterShape cs = c.viewShape();
+        switch(cs){
+            case SQUARE:
+                gc.setFill(c.viewFillColor());
+                gc.fillRect((w/3), 2, h-4, h-4);
+                gc.setStroke(c.viewOutlineColor());
+                gc.strokeRect((w/3), 2, h-4, h-4);
+                break;
+            case CIRCLE:
+                gc.setFill(c.viewFillColor());
+                gc.fillOval((w/3), 2, h-4, h-4);
+                gc.setStroke(c.viewOutlineColor());
+                gc.strokeOval((w/3), 2, h-4, h-4);
+                break;
+            case TRIANGLE:
+                double triangle_xpoints[] = {w/2, w/4, 0.75*w};
+                double triangle_ypoints[] = {2, h-2, h-2};
+                gc.setFill(c.viewFillColor());
+                gc.fillPolygon(triangle_xpoints, triangle_ypoints, triangle_xpoints.length);
+                gc.setStroke(c.viewOutlineColor());
+                gc.strokePolygon(triangle_xpoints, triangle_ypoints, triangle_xpoints.length);
+                break;
+            case DIAMOND:
+                double diamond_xpoints[] = {w/2, 0.25*w, w/2, 0.75*w};
+                double diamond_ypoints[] = {2, h/2, h-2, h/2};
+                gc.setFill(c.viewFillColor());
+                gc.fillPolygon(diamond_xpoints, diamond_ypoints, diamond_xpoints.length);
+                gc.setStroke(c.viewOutlineColor());
+                gc.strokePolygon(diamond_xpoints, diamond_ypoints, diamond_xpoints.length);
+                break;
+            case STAR:
+                double star_xpoints[] = {w/2, w/3, 2, w/4, w/8, w/2, 7*(w/8), 3*(w/4), w-2, 2*(w/3)};
+                double star_ypoints[] = {2, h/3, h/3, 2*(h/3), h-2, 3*(h/4), h-2, 2*(h/3), h/3, h/3};
+                gc.setFill(c.viewFillColor());
+                gc.fillPolygon(star_xpoints, star_ypoints, star_xpoints.length);
+                gc.setStroke(c.viewOutlineColor());
+                gc.strokePolygon(star_xpoints, star_ypoints, star_xpoints.length);
+                break;
+        }
+
+
+        return canvas;
 	}
 
 	/**
