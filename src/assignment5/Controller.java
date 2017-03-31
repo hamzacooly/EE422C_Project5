@@ -270,14 +270,13 @@ public class Controller implements Initializable {
 	
 	/**
 	 * Helper function for getting Critter names
-	 * @return List of folders to check (hardcoded to working dir, bin, and src)
+	 * @return List of folders to check (hardcoded to working dir and src)
 	 */
 	private ArrayList<String> getFolders(){
 		ArrayList<String> dirs = new ArrayList<String>();
 		String working_dir = System.getProperty("user.dir");
 		dirs.add(working_dir);
 		dirs.add(working_dir + File.separator + "src" + File.separator + "assignment5");
-		dirs.add(working_dir + File.separator + "bin" + File.separator + "assignment5");
 		return dirs;
 	}
 	
