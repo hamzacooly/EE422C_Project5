@@ -64,6 +64,7 @@ public class Critter2 extends Critter {
      * @return String to be printed
      */
     public static String runStats (List<Critter> critters) {
+
         int avgNRG = 0;
         String s = "";
         s += "" + critters.size() + " critters as follows -- ";
@@ -77,6 +78,7 @@ public class Critter2 extends Critter {
         s += "Avg Energy: " + avgNRG + "\n";
     
         return s;
+
     }
 
 
