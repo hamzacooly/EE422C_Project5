@@ -2,8 +2,18 @@ package assignment5;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
 
 public abstract class Critter {
@@ -39,7 +49,10 @@ public abstract class Critter {
 	private static String myPackage;
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
-
+	private static int[][] world = new int[Params.world_width][Params.world_height];
+	private static Map<Critter, Canvas> oldNodes = new HashMap<>();
+	private static Map<Critter, Canvas> newNodes = new HashMap<>();
+	private static Map<Critter, Shape> nodes = new HashMap<>();
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 	static {
 		myPackage = Critter.class.getPackage().toString().split(" ")[1];
@@ -289,13 +302,68 @@ public abstract class Critter {
 	}
 	
 	public static void displayWorld(Object pane) {
-		
+		GridPane grid = (GridPane) pane;
+		for(int k = 0; k < Params.world_width; k++){
+			for(int j = 0; j < Params.world_height; j++){
+				world[k][j] = 0;
+			}
+		}
+		if(population.size() > 0){
+			for(int k = 0; k < population.size(); k++){
+				int x = population.get(k).x_coord;
+				int y = population.get(k).y_coord;
+				if(world[x][y] == 0){
+					world[x][y] = k;
+					Shape shape = getShape(population.get(k).viewShape());
+					if(shape instanceof Circle)
+						((Circle)shape).setRadius((grid.getHeight()/Params.world_height)/2 - 5);
+					else{
+						((Rectangle)shape).setWidth(grid.getWidth()/Params.world_width - 5);
+						((Rectangle)shape).setHeight(grid.getHeight()/Params.world_height - 5);
+					}
+					nodes.put(population.get(k), shape);
+					// CREATE A FUNCTION THAT RETURNS A CANVAS OBJECT
+					// THEN WE CAN ADD IT TO THE NODES MATRIX
+					// TO KEEP TRACK OF WHAT NODE CORRESPONDS TO WHAT CRITTER
+					// Something like:
+					// private Canvas getShape(CritterShape shape)
+				}
+			}
+		}
+		for(int x = 0; x < Params.world_width; x++){
+			for(int y = 0; y < Params.world_height; y++){
+				if(world[x][y] != 0){
+					grid.add(nodes.get(population.get(world[x][y])), y, x);
+//					switch(population.get(world[x][y]).viewShape()){
+//					case DIAMOND:
+//						
+//					case SQUARE:
+//						Rectangle rect = new Rectangle(grid.getWidth()/Params.world_width - 5, grid.getHeight()/Params.world_height - 5);
+//						grid.add(rect, y, x);
+//						break;
+//					case STAR: 
+//						
+//					case TRIANGLE:
+//						
+//					case CIRCLE:
+//						Circle circle = new Circle((grid.getWidth()/Params.world_width)/2 - 5);
+//						grid.add(circle, y, x);
+//						break;						
+//					}
+				}
+			}
+		}
 	} 
 	/* Alternate displayWorld, where you use Main.<pane> to reach into your
 	   display component.
 	   // public static void displayWorld() {}
 	*/
 	
+	private static Shape getShape(CritterShape viewShape) {
+		// TODO Auto-generated method stub
+		return Math.random() > 0.01 ? new Circle() : new Rectangle();
+	}
+
 	/**
 	 * create and initialize a Critter subclass.
 	 * critter_class_name must be the unqualified name of a concrete subclass of Critter, if not,
@@ -433,8 +501,10 @@ public abstract class Critter {
 		Iterator<Critter> jj = population.iterator();
 		while(jj.hasNext()){
 			Critter k = jj.next();
-			if(k.energy <= 0)
+			if(k.energy <= 0){
+				nodes.remove(k);
 				jj.remove();
+			}
 		}
 	}
 	
