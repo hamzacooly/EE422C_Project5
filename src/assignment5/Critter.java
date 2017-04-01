@@ -334,7 +334,7 @@ public abstract class Critter {
 		boolean[][] isOccupied = new boolean[Params.world_width][Params.world_height];
 		for(Critter c: population){
 			if(!isOccupied[c.x_coord][c.y_coord]){
-				grid.add(nodes.get(c), c.y_coord, c.x_coord);
+				grid.add(nodes.get(c), c.x_coord, c.y_coord);
 				isOccupied[c.x_coord][c.y_coord] = true;
 			}
 		}
