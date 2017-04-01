@@ -19,41 +19,38 @@
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="assignment5.Controller">
   <children>
   	<HBox prefHeight="200.0" prefWidth="1000.0">
-    <AnchorPane prefHeight="200.0" prefWidth="600.0">
-         <children>
-            <ChoiceBox fx:id="MakeCritterCB" layoutX="95.0" layoutY="15.0" prefWidth="150.0" />
-            <TextField fx:id="TimeStepTF" layoutX="348.0" layoutY="15.0" prefWidth="149.0" promptText="int" />
-            <Button fx:id="TimeStepButton" layoutX="496.0" layoutY="15.0" mnemonicParsing="false" text="TimeStep" />
-            <Button fx:id="RunStatsButton" layoutX="285.0" layoutY="114.0" mnemonicParsing="false" text="RunStats" />
-            <Slider fx:id="SpeedSlider" layoutX="334.0" layoutY="73.0" prefHeight="14.0" prefWidth="96.0" />
-            <TextField fx:id="SeedTF" layoutX="17.0" layoutY="114.0" promptText="int" />
-            <Button fx:id="SeedButton" layoutX="166.0" layoutY="114.0" mnemonicParsing="false" text="Set Seed" />
-            <Label id="SpeedLabel" layoutX="293.0" layoutY="71.0" text="Speed" />
-            <TextField fx:id="MakeCritterTF" layoutX="15.0" layoutY="15.0" prefHeight="25.0" prefWidth="80.0" promptText="int" />
-            <Button fx:id="MakeCritterButton" layoutX="14.0" layoutY="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Make Critter" />
-            <Button fx:id="RunButton" layoutX="480.0" layoutY="66.0" mnemonicParsing="false" text="Run" />
-            <Button fx:id="PauseButton" layoutX="529.0" layoutY="66.0" mnemonicParsing="false" text="Pause" />
-            <Button fx:id="QuitButton" layoutX="531.0" layoutY="114.0" mnemonicParsing="false" text="QUIT" />
-            <TextField fx:id="SpeedTF" layoutX="430.0" layoutY="67.0" prefHeight="25.0" prefWidth="43.0" promptText="int" />
-            <MenuButton fx:id="RunStatsMenuButton" layoutX="348.0" layoutY="114.0" mnemonicParsing="false" text="Select Critters">
-              <items>
-              </items>
-            </MenuButton>
-         </children></AnchorPane>
-    <StackPane prefHeight="200.0" prefWidth="400.0">
-         <children>
-         	<TextArea fx:id="TA"/>
-         </children>
-         </StackPane>
+	    <AnchorPane prefHeight="200.0" prefWidth="600.0">
+	         <children>
+	            <ChoiceBox fx:id="MakeCritterCB" layoutX="95.0" layoutY="15.0" prefWidth="150.0" />
+	            <TextField fx:id="TimeStepTF" layoutX="348.0" layoutY="15.0" prefWidth="149.0" promptText="int" />
+	            <Button fx:id="TimeStepButton" layoutX="496.0" layoutY="15.0" mnemonicParsing="false" text="TimeStep" />
+	            <Button fx:id="RunStatsButton" layoutX="285.0" layoutY="114.0" mnemonicParsing="false" text="RunStats" />
+	            <Slider fx:id="SpeedSlider" layoutX="334.0" layoutY="73.0" prefHeight="14.0" prefWidth="96.0" />
+	            <TextField fx:id="SeedTF" layoutX="17.0" layoutY="114.0" promptText="int" />
+	            <Button fx:id="SeedButton" layoutX="166.0" layoutY="114.0" mnemonicParsing="false" text="Set Seed" />
+	            <Label id="SpeedLabel" layoutX="293.0" layoutY="71.0" text="Speed" />
+	            <TextField fx:id="MakeCritterTF" layoutX="15.0" layoutY="15.0" prefHeight="25.0" prefWidth="80.0" promptText="int" />
+	            <Button fx:id="MakeCritterButton" layoutX="14.0" layoutY="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Make Critter" />
+	            <Button fx:id="RunButton" layoutX="480.0" layoutY="66.0" mnemonicParsing="false" text="Run" />
+	            <Button fx:id="PauseButton" layoutX="529.0" layoutY="66.0" mnemonicParsing="false" text="Pause" />
+	            <Button fx:id="QuitButton" layoutX="531.0" layoutY="114.0" mnemonicParsing="false" text="QUIT" />
+	            <TextField fx:id="SpeedTF" layoutX="430.0" layoutY="67.0" prefHeight="25.0" prefWidth="43.0" promptText="int" />
+	            <MenuButton fx:id="RunStatsMenuButton" layoutX="348.0" layoutY="114.0" mnemonicParsing="false" text="Select Critters">
+	              <items>
+	              </items>
+	            </MenuButton>
+	         </children></AnchorPane>
+	    <StackPane prefHeight="200.0" prefWidth="400.0">
+	         <children>
+	         	<TextArea fx:id="TA"/>
+	         </children>
+	         </StackPane>
     </HBox>
-    <AnchorPane prefHeight="450.0" prefWidth="1000.0">
-         <children>
-            <GridPane fx:id="Grid" prefHeight="450.0" prefWidth="1000.0">
-              <columnConstraints>
-              </columnConstraints>
-              <rowConstraints>
-              </rowConstraints>
-            </GridPane>
-         </children></AnchorPane>
+    <GridPane fx:id="Grid" prefHeight="450.0" prefWidth="1000.0">
+      <columnConstraints>
+      </columnConstraints>
+      <rowConstraints>
+      </rowConstraints>
+    </GridPane>
   </children>
 </VBox>
