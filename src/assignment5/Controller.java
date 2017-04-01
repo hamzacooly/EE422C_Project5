@@ -56,7 +56,6 @@ public class Controller implements Initializable {
 	private GridPane Grid;
 	@FXML
 	private TextArea TA;
-	 
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {	
@@ -77,11 +76,18 @@ public class Controller implements Initializable {
 					slideval = Integer.parseInt(SpeedTF.getText());
 					if(slideval <= 0)
 						slideval = (long)SpeedSlider.getValue();
-					else
+					if(SpeedSlider.isValueChanging()){
+						SpeedTF.setText(Integer.toString((int)SpeedSlider.getValue()));
+					}
+					else{
 						SpeedSlider.setValue((double)slideval);
+					}
 				}
 				catch(Exception e){
 					slideval = (long)SpeedSlider.getValue();
+					if(SpeedSlider.isValueChanging()){
+						SpeedTF.setText(Integer.toString((int)SpeedSlider.getValue()));
+					}
 				}
 				long delay = 1_000_000_000/slideval;
 				// TODO Auto-generated method stub
