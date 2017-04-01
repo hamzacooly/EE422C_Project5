@@ -246,28 +246,26 @@ public class Controller implements Initializable {
 				TA.clear();
 	              for(MenuItem item : Controller.bugs){
 	            	  CheckMenuItem checkMenuItem = (CheckMenuItem) item;
-	                  if(checkMenuItem.isSelected()) {
-	                	  List<Critter> critters = new ArrayList<>();
-	                	  String name = checkMenuItem.getText();
-	                	  String text;
-	                	  try{
-	  	            		critters = Critter.getInstances(name);
-		  	            	}
-		  	            	catch(Exception e){
-		  	            	}
-		  	            	Class<?> myCritter = null;
-		  	        		try {
-		  	        			myCritter = Class.forName("assignment5." + name); 	// Class object of specified name
-		  	        		} catch (ClassNotFoundException e) {
-		  	        		}
-		  	        		try{
-		  	        			Method method = myCritter.getMethod("runStats", List.class);
-		  	        			TA.appendText((String) method.invoke(null, critters));
-		  	        		}
-		  	        		catch(Exception e){
-		  	        			TA.appendText(Critter.runStats(critters));
-		  	        		}
-	                  }
+                	  List<Critter> critters = new ArrayList<>();
+                	  String name = checkMenuItem.getText();
+                	  String text;
+                	  try{
+  	            		critters = Critter.getInstances(name);
+	  	            	}
+	  	            	catch(Exception e){
+	  	            	}
+	  	            	Class<?> myCritter = null;
+	  	        		try {
+	  	        			myCritter = Class.forName("assignment5." + name); 	// Class object of specified name
+	  	        		} catch (ClassNotFoundException e) {
+	  	        		}
+	  	        		try{
+	  	        			Method method = myCritter.getMethod("runStats", List.class);
+	  	        			TA.appendText((String) method.invoke(null, critters));
+	  	        		}
+	  	        		catch(Exception e){
+	  	        			TA.appendText(Critter.runStats(critters));
+	  	        		}
 	              }
 			}  
         };
