@@ -46,11 +46,14 @@
 	         </children>
 	         </StackPane>
     </HBox>
-    <GridPane fx:id="Grid" prefHeight="450.0" prefWidth="1000.0">
-      <columnConstraints>
-      </columnConstraints>
-      <rowConstraints>
-      </rowConstraints>
-    </GridPane>
+    <AnchorPane prefHeight="450.0" prefWidth="1000.0" maxHeight="450.0" maxWidth="1000.0" minHeight="450.0" minWidth="1000.0">
+    	<children>
+	    <GridPane fx:id="Grid" prefHeight="450.0" prefWidth="1000.0" maxHeight="450.0" maxWidth="1000.0" minHeight="450.0" minWidth="1000.0">
+	      <columnConstraints>
+	      </columnConstraints>
+	      <rowConstraints>
+	      </rowConstraints>
+	    </GridPane></children>
+	</AnchorPane>
   </children>
 </VBox>

@@ -224,13 +224,13 @@ public class Controller implements Initializable {
         int numRows = Params.world_height;
         for (int i = 0; i < numCols; i++) {
             ColumnConstraints colConst = new ColumnConstraints();
-            colConst.setPercentWidth(100.0 / numCols);
+            colConst.setPercentWidth(100.0 / (double)numCols);
             colConst.setHalignment(HPos.CENTER);
             Grid.getColumnConstraints().add(colConst);
         }
         for (int i = 0; i < numRows; i++) {
             RowConstraints rowConst = new RowConstraints();
-            rowConst.setPercentHeight(100.0 / numRows);
+            rowConst.setPercentHeight(100.0 / (double)numRows);
             rowConst.setValignment(VPos.CENTER);
             Grid.getRowConstraints().add(rowConst);         
         }

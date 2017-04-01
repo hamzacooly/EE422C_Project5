@@ -315,16 +315,6 @@ public abstract class Critter {
 		
 		//update our map
 		for(Critter c: population){
-//			Shape shape = getShape(c.viewShape());
-//			if(shape instanceof Circle)
-//				((Circle)shape).setRadius((grid.getHeight()/Params.world_height)/2 - 5);
-//			else{
-//				((Rectangle)shape).setWidth(grid.getWidth()/Params.world_width - 5);
-//				((Rectangle)shape).setHeight(grid.getHeight()/Params.world_height - 5);
-//			}
-//			shape.setFill(c.viewFillColor());
-//			shape.setStroke(c.viewOutlineColor());
-//			nodes.put(c, shape);
             double w = grid.getWidth()/Params.world_width;
             double h = grid.getHeight()/Params.world_height;
             Canvas canvas = getShape(c, w, h);
@@ -334,7 +324,7 @@ public abstract class Critter {
 		boolean[][] isOccupied = new boolean[Params.world_width][Params.world_height];
 		for(Critter c: population){
 			if(!isOccupied[c.x_coord][c.y_coord]){
-				grid.add(nodes.get(c), c.y_coord, c.x_coord);
+				grid.add(nodes.get(c), c.x_coord, c.y_coord);
 				isOccupied[c.x_coord][c.y_coord] = true;
 			}
 		}
@@ -351,20 +341,36 @@ public abstract class Critter {
         CritterShape cs = c.viewShape();
         switch(cs){
             case SQUARE:
-                gc.setFill(c.viewFillColor());
-                gc.fillRect((w/3), 2, h-4, h-4);
-                gc.setStroke(c.viewOutlineColor());
-                gc.strokeRect((w/3), 2, h-4, h-4);
+            	if(Math.min(w, h) == h){
+	                gc.setFill(c.viewFillColor());
+	                gc.fillRect(w/4, 0, h, h);
+	                gc.setStroke(c.viewOutlineColor());
+	                gc.strokeRect(w/4, 0, h, h);
+            	}
+            	else{
+            		gc.setFill(c.viewFillColor());
+	                gc.fillRect(0, h/4, w, w);
+	                gc.setStroke(c.viewOutlineColor());
+	                gc.strokeRect(0, h/4, w, w);
+            	}
                 break;
             case CIRCLE:
-                gc.setFill(c.viewFillColor());
-                gc.fillOval((w/3), 2, h-4, h-4);
-                gc.setStroke(c.viewOutlineColor());
-                gc.strokeOval((w/3), 2, h-4, h-4);
+            	if(Math.min(w, h) == h){
+	                gc.setFill(c.viewFillColor());
+	                gc.fillOval(w/4, 0, h, h);
+	                gc.setStroke(c.viewOutlineColor());
+	                gc.strokeOval(w/4, 0, h, h);
+            	}
+            	else{
+            		gc.setFill(c.viewFillColor());
+	                gc.fillOval(0, h/4, w, w);
+	                gc.setStroke(c.viewOutlineColor());
+	                gc.strokeOval(0, h/4, w, w);
+            	}
                 break;
             case TRIANGLE:
                 double triangle_xpoints[] = {w/2, w/4, 0.75*w};
-                double triangle_ypoints[] = {2, h-2, h-2};
+                double triangle_ypoints[] = {0, h, h};
                 gc.setFill(c.viewFillColor());
                 gc.fillPolygon(triangle_xpoints, triangle_ypoints, triangle_xpoints.length);
                 gc.setStroke(c.viewOutlineColor());
@@ -372,15 +378,15 @@ public abstract class Critter {
                 break;
             case DIAMOND:
                 double diamond_xpoints[] = {w/2, 0.25*w, w/2, 0.75*w};
-                double diamond_ypoints[] = {2, h/2, h-2, h/2};
+                double diamond_ypoints[] = {0, h/2, h, h/2};
                 gc.setFill(c.viewFillColor());
                 gc.fillPolygon(diamond_xpoints, diamond_ypoints, diamond_xpoints.length);
                 gc.setStroke(c.viewOutlineColor());
                 gc.strokePolygon(diamond_xpoints, diamond_ypoints, diamond_xpoints.length);
                 break;
             case STAR:
-                double star_xpoints[] = {w/2, w/3, 2, w/4, w/8, w/2, 7*(w/8), 3*(w/4), w-2, 2*(w/3)};
-                double star_ypoints[] = {2, h/3, h/3, 2*(h/3), h-2, 3*(h/4), h-2, 2*(h/3), h/3, h/3};
+                double star_xpoints[] = {w/2, w/3, 0, w/4, w/8, w/2, 7*(w/8), 3*(w/4), w, 2*(w/3)};
+                double star_ypoints[] = {0, h/3, h/3, 2*(h/3), h, 3*(h/4), h, 2*(h/3), h/3, h/3};
                 gc.setFill(c.viewFillColor());
                 gc.fillPolygon(star_xpoints, star_ypoints, star_xpoints.length);
                 gc.setStroke(c.viewOutlineColor());
